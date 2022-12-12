@@ -1,0 +1,102 @@
+@use '../../styles/mixins.scss' as *;
+@use '../../styles/colours' as *;
+
+.watchlist {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 15rem;
+
+    background-color: white;
+    box-shadow: 0px 2px 5px rgba(19, 24, 44, 0.1);
+    border-radius: 0.5rem;
+    top: -6rem;
+    margin: 0 4rem 0 0;
+    padding: 1rem;
+
+    &__item {
+        margin-bottom: 1.25rem;
+    }
+
+    &__header {
+        font-family: "TitilliumWeb", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $primary-grey;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid $secondary-cloud;
+    }
+
+    &__stock {
+        font-family: "TitilliumWeb", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $primary-grey;
+        margin: 0 0 0.5rem 0;
+        padding: 0;
+    }
+
+    &__ticker {
+        font-family: "TitilliumWeb", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 400;
+        color: $primary-grey;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__price {
+        font-family: "TitilliumWeb", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 400;
+        color: $primary-grey;
+        margin: 0;
+        padding: 0;
+    }
+
+    &__change {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-family: "TitilliumWeb", sans-serif;
+        font-size: 0.7rem;
+        font-weight: 600;
+        
+        height: 20px;
+        width: 60px;
+        color: $supporting-green;
+        background-color: rgba(21, 132, 99, 0.07);
+        border-radius: 20px;
+
+        margin: 0 0 0.5rem 0;
+        padding: 0;
+    
+        &--red {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        
+            font-family: "TitilliumWeb", sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+
+            height: 20px;
+            width: 50px;
+            color: $supporting-red;
+            background-color: rgba(201, 69, 21, 0.07);
+            border-radius: 20px;
+
+            margin: 0 0 0.5rem 0;
+            padding: 0;
+        }
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.7rem;
+    }
+}

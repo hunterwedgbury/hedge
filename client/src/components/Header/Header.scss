@@ -1,0 +1,56 @@
+@use '../../styles/mixins' as *;
+@use '../../styles/colours' as *;
+
+
+.header {
+    background-color: $background-navy;
+    height: 30vh;
+    padding: 2rem 4rem 0 4rem;
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1.5rem;
+    }
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    width: 15rem;
+    margin: 0 auto 0 0;
+    padding-top: 0.25rem;
+}
+
+.search-avatar {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 0 auto;
+    gap: 1rem;
+    
+    &__search {
+        font-family: "TitilliumWeb", sans-serif;
+        font-weight: 400;
+        height: 2.5rem;
+        width: 20rem;
+
+        border: 1px solid $secondary-cloud;
+        border-radius: 1.5rem;
+
+        &::placeholder {
+            padding-left: 1rem;
+        }
+    }
+
+    &__avatar {
+        height: 2.5rem;
+        width: 2.5rem;
+        border: 1px solid white;
+        border-radius: 50%;
+
+        &:hover {
+            border: 1px solid $primary-mint;
+        }
+    }
+}

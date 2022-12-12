@@ -1,0 +1,52 @@
+@use '../../styles/mixins.scss' as *;
+@use '../../styles/colours' as *;
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 15rem;
+
+    background-color: white;
+    box-shadow: 0px 2px 5px rgba(19, 24, 44, 0.1);
+    border-radius: 0.5rem;
+    top: -6rem;
+    margin: 0 0 0 4rem;
+    padding: 1rem;
+
+    &__container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-left: 0.5rem;
+        gap: 1rem;
+    }
+
+    &__icon {
+        height: 1.5rem;
+        width: 1.5rem;
+    }
+
+    &__item {
+        font-family: "TitilliumWeb", sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: $primary-grey;
+    }
+
+    &__add {
+        font-family: "TitilliumWeb", sans-serif;
+        font-weight: 400;
+        color: #FFFFFF;
+        background-color: $primary-mint;
+        border: none;
+        border-radius: 1.5rem;
+        height: 2.5rem;
+        width: 100%;
+        margin-top: 1rem;
+
+        &:hover {
+            background-color: $background-navy;
+        }
+    }
+}

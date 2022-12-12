@@ -1,0 +1,18 @@
+@use '/src/styles/mixins' as *;
+@use '/src/styles/colours' as *;
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "TitilliumWeb", sans-serif;
+    font-weight: 400;
+    font-size: .8125rem;
+    color: $secondary-slate;
+    background-color: $background-grey;
+
+    height: 2rem;
+    width: 100%;
+    padding-bottom: 4rem;
+}

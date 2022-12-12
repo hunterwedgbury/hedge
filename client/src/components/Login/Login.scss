@@ -1,0 +1,10 @@
+@use '../../styles/mixins.scss' as *;
+@use '../../styles/colours' as *;
+
+.login {
+
+    &__logo {
+        width: 12rem;
+        height: auto
+    }
+}

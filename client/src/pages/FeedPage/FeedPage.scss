@@ -1,0 +1,21 @@
+@use '../../styles/mixins.scss' as *;
+@use '../../styles/colours' as *;
+
+.feed {
+    background-color: white;
+    border-radius: 0.5rem;
+}
+
+.feed-container {
+    padding: 1rem 0 0 2rem;
+
+    &__header {
+        font-family: "TitilliumWeb", sans-serif;
+        font-size: 2.25rem;
+        font-weight: 600;
+        line-height: 2.25rem;
+        color: $primary-grey;
+        padding: 1rem 0 0.5rem 0;
+        margin: 0;
+    }
+}
