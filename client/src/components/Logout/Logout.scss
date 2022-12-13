@@ -1,10 +1,21 @@
 @use '../../styles/mixins.scss' as *;
 @use '../../styles/colours' as *;
 
-.login {
+.signout {
 
-    &__logo {
-        width: 12rem;
-        height: auto
+    &__button {
+        font-family: "TitilliumWeb", sans-serif;
+        font-weight: 400;
+        color: $primary-grey;
+        background-color: white;
+        border: 1px solid $secondary-cloud;
+        border-radius: 1.5rem;
+        height: 2.5rem;
+        width: 10rem;
+
+        &:hover {
+            font-weight: 700;
+            border: 1.5px solid $secondary-cloud;
+        }
     }
 }

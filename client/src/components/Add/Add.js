@@ -2,102 +2,119 @@ import "./Add.scss";
 
 import axios from "axios";
 import { useNavigate  } from 'react-router-dom';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Add = () => {
 
-    const [updatedMessage, setUpdatedMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-
-    const [title, setTitle] = useState('');
-    const [stock, setStock] = useState('');
-    const [currentPrice, setCurrentPrice] = useState('');
-    const [forecast, setForecast] = useState('');
-    const [analysis, setAnalysis] = useState('');
+    const initialValues = { title: '', stock: '', currentPrice: '', forecast: '', analysis: '' };
+    const [formValues, setFormValues] = useState(initialValues);
+    const [formErrors, setFormErrors] = useState({});
+    const [updatedMessage, setUpdatedMessage] = useState('');
 
     const navigateFeedPage = useNavigate();
 
-    const handleAddPost = (event) => {
-        event.preventDefault();
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormValues({...formValues, [name]: value});
+    };
 
-        const value1 = document.forms['myForm']['title'].value;
-        if (value1 === '') {
-            setErrorMessage('Title must be filled');
-            return false;
-        };
-    
-        const value2 = document.forms['myForm']['stock'].value;
-        if (value2 === '') {
-            setErrorMessage('Stock must be filled');
-            return false;
-        };
-    
-        const value3 = document.forms['myForm']['price'].value;
-        if (value3 === '') {
-            setErrorMessage('Price must be filled');
-            return false;
-        };
-    
-        const value4 = document.forms['myForm']['Analysis'].value;
-        if (value4 === '') {
-            setErrorMessage('Analysis must be filled');
-            return false;
-        };
+    const handleAdd = (event) => {
+        event.preventDefault();
+        setFormErrors(validate(formValues));
 
         axios
+        .get(`http://localhost:1000/auth/profile`, { withCredentials: true })
+        .then(res => {
+            console.log('PROFILE', res.data);
+        })
         .post('http://localhost:1000/feed', {
-            'title': title,
-            'stock': stock,
-            'current_price': currentPrice,
-            'forecast': forecast,
-            'analysis': analysis,
+            'title': formValues.title,
+            'stock': formValues.stock,
+            // 'name': res.data.displayName,
+            'current_price': formValues.currentPrice,
+            'forecast': formValues.forecast,
+            'analysis': formValues.analysis,
         })
         .then((res) => {
             console.log(res);
         })
-        .then(setUpdatedMessage('Thank you for sharing your analysis on Hedge'))
-        // .then(setTimeout(navigateFeedPage('/'), 3000))
+        // .then(setUpdatedMessage('Thank you for sharing your analysis on Hedge'))
+        // .then(setTimeout(()=>navigateFeedPage('/'), 2000))
         .catch((error) => {
             console.log(error);
         });
     };
 
-    const handleCancelClick = (event) => {
+    const handleCancel = (event) => {
         event.preventDefault();
         navigateFeedPage("/")
     };
 
+    const validate = (formValues) => {
+        const formErrors = {}
+        if (!formValues.title) {
+            formErrors.title = "Please provide title";
+        }
+        if (!formValues.stock) {
+            formErrors.stock = "Please provide feature stock";
+        }
+        if (!formValues.currentPrice) {
+            formErrors.currentPrice = "Please provide stock price";
+        }
+        if (!formValues.forecast) {
+            formErrors.forecast = "Please provide forecast";
+        }
+        if (!formValues.analysis) {
+            formErrors.analysis = "Please provide analysis";
+        } 
+        return formErrors;
+    }
+
+    useEffect(() => {
+        if (Object.keys(formErrors).length === 0) {
+            console.log(formValues);
+        }}, [formErrors]);
+
     return (
-        <form className='form' name='myForm' onSubmit={handleAddPost}>
-            <h3 className="form__subheader">Title</h3>
-            <input className="form__title" name='title' type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title"></input>
-            
+        <form className='form' onSubmit={handleAdd}>
+            <div className="input-container">
+                <h3 className="form__subheader">Title</h3>
+                <input className="form__title" name='title' type="text" value={formValues.title} onChange={handleChange} placeholder="Title"></input>
+                <p className="input-container__error">{formErrors.title}</p>
+            </div>
+
             <div className="form__container">
-                <div>
+                <div className="input-container">
                     <h3 className="form__subheader">Stock</h3>
-                    <input className="form__input" name='stock' type="text" value={stock} onChange={(e) => setStock(e.target.value)} placeholder="Stock"></input>
+                    <input className="form__input" name='stock' type="text" value={formValues.stock} onChange={handleChange} placeholder="Stock"></input>
+                    <p className="input-container__error">{formErrors.stock}</p>
                 </div>
-                <div>
+                <div className="input-container">
                     <h3 className="form__subheader">Current Price</h3>
-                    <input className="form__input" name='price' type="number" value={currentPrice} onChange={(e) => setCurrentPrice(e.target.value)} placeholder="Current Price"></input>
+                    <input className="form__input" name='currentPrice' type="number" value={formValues.currentPrice} onChange={handleChange} placeholder="Current Price"></input>
+                    <p className="input-container__error">{formErrors.currentPrice}</p>
                 </div>
-                <div>
+                <div className="input-container">
                     <h3 className="form__subheader">Forecast</h3>
-                    <select className="form__forecast" type="text" value={forecast} onChange={(e) => setForecast(e.target.value)} placeholder="Forecast">
+                    <select className="form__forecast" name='forecast' type="text" value={formValues.forecast} onChange={handleChange} placeholder="Forecast">
                         <option value='' disabled selected hidden></option>
                         <option value='BULLISH'>BULLISH</option>
                         <option value='BEARISH'>BEARISH</option>
                     </select>
+                    <p className="input-container__error">{formErrors.forecast}</p>
                 </div>
             </div>
 
-            <h3 className="form__subheader">Analysis</h3>
-            <textarea className="form__textarea" name='analysis' type="text" value={analysis} onChange={(e) => setAnalysis(e.target.value)} placeholder="Analysis"></textarea>
+            <div className="input-container">
+                <h3 className="form__subheader">Analysis</h3>
+                <textarea className="form__textarea" name='analysis' type="text" value={formValues.analysis} onChange={handleChange} placeholder="Analysis"></textarea>
+                <p className="input-container__error">{formErrors.analysis}</p>
+            </div>
 
             <div className="buttons-container">
-                <p className="buttons-container__message">{updatedMessage}{errorMessage}</p>
+                <p className="buttons-container__message">{updatedMessage}</p>
                 <div className="buttons-container__container">
-                    <button onClick={handleCancelClick} className="buttons-container__cancel">Cancel</button>
+                    <button onClick={handleCancel} className="buttons-container__cancel">Cancel</button>
                     <button type='submit' className="buttons-container__add">Add New Post</button>
                 </div>
             </div>

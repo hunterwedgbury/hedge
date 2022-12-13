@@ -11,7 +11,7 @@ const FeedPage = () => {
 
   useEffect(() => {
     axios
-      .get(urlForFeed)
+      .get(urlForFeed, { withCredentials: true })
       .then((response) => {
         setPostsToDisplay(response.data);
       })
