@@ -48,9 +48,10 @@
         width: 2.5rem;
         border: 1px solid white;
         border-radius: 50%;
+        background-color: $background-grey;
 
         &:hover {
-            border: 1px solid $primary-mint;
+            border: 2px solid $primary-mint;
         }
     }
 }

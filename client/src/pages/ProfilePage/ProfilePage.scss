@@ -15,7 +15,7 @@
 }
 
 .profile {
-    padding: 2rem 2rem 2rem 2.5rem;
+    padding: 2rem 2.5rem;
     position: relative;
     top: -9rem;
 
@@ -30,24 +30,34 @@
 
 .details {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    margin: 1.5rem 0 0 0;
 
     &__name {
         font-family: "TitilliumWeb", sans-serif;
         font-size: 1.5rem;
         font-weight: 600;
         color: $primary-grey;
-        padding: 1rem 0 0 0;
+        padding: 0;
         margin: 0;
+    }
+
+    &__button {
+        display: flex;
+        padding: 0;
+        margin: 0 0 0 auto;
     }
 
     &__headline {
         font-family: "TitilliumWeb", sans-serif;
         font-size: 0.9rem;
         font-weight: 600;
+        line-height: 1.25rem;
         color: $primary-grey;
-        width: 70%;
-        padding: 0.4rem 0 0 0;
+        width: 65%;
+        padding: 1rem 0 0 0;
         margin: 0;
     }
 
@@ -56,7 +66,40 @@
         font-size: 0.75rem;
         font-weight: 400;
         color: $primary-grey;
-        padding: 0.4rem 0 4rem 0;
+        padding: 1rem 0 0 0;
         margin: 0;
+    }
+}
+
+.login-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem 0 0 2rem;
+    gap: 1rem;
+
+    &__header {
+        font-family: "TitilliumWeb", sans-serif;
+        font-size: 2rem;
+        font-weight: 600;
+        line-height: 2.25rem;
+        color: $primary-grey;
+        padding: 1rem 0 0.5rem 0;
+        margin: 0;
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+    }
+
+    &__arrow {
+        width: 1.5rem;
+        padding: 1rem 0 0.5rem 0;
+        margin: 0;
+    }
+
+    &__button {
+        padding: 2rem;
     }
 }

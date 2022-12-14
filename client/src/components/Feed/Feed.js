@@ -11,8 +11,7 @@ const Feed = ({ posts, setPostsToDisplay }) => {
               id={post.id}
               title={post.title}
               date={post.date}
-              firstName={post.first_name}
-              lastName={post.last_name}
+              name={post.name}
               stock={post.stock}
               currentPrice={post.current_price}
               forecast={post.forecast}

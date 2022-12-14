@@ -1,9 +1,12 @@
 import "./FeedItem.scss";
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import loading from '../../assets/loading.json'
+// import { createChart } from 'lightweight-charts';
 
-const FeedItem = ({title, firstName, lastName, date, stock, currentPrice, forecast, analysis}) => {
+const FeedItem = ({title, name, date, stock, currentPrice, forecast, analysis}) => {
 
+  console.log("name",name);
   let forecastClass = ""
   if(forecast === "BEARISH") {
       forecastClass = "post__element-forecast--red"
@@ -15,14 +18,56 @@ const FeedItem = ({title, firstName, lastName, date, stock, currentPrice, foreca
 
   const [stockData, setStockData] = useState(null);
 
+    // START OF CHART CODE
+
+        // const stockChart = LightweightCharts.createChart(document.body, {
+          
+        //   width: 600,
+        //   height: 300,
+        //   layout: {
+        //     backgroundColor: '#000000',
+        //     textColor: 'rgba(255, 255, 255, 0.9)',
+        //   },
+        //   grid: {
+        //     vertLines: {
+        //       color: 'rgba(197, 203, 206, 0.5)',
+        //     },
+        //     horzLines: {
+        //       color: 'rgba(197, 203, 206, 0.5)',
+        //     },
+        //   },
+        //   rightPriceScale: {
+        //     borderColor: 'rgba(197, 203, 206, 0.8)',
+        //   },
+        //   timeScale: {
+        //     borderColor: 'rgba(197, 203, 206, 0.8)',
+        //   },
+        // });
+
+        // var candleSeries = stockChart.addCandlestickSeries({
+        //   upColor: 'rgba(255, 144, 0, 1)',
+        //   downColor: '#000',
+        //   borderDownColor: 'rgba(255, 144, 0, 1)',
+        //   borderUpColor: 'rgba(255, 144, 0, 1)',
+        //   wickDownColor: 'rgba(255, 144, 0, 1)',
+        //   wickUpColor: 'rgba(255, 144, 0, 1)',
+        // });
+
+        // stockChart.timeScale().fitContent();
+
+    // END OF CHART CODE
+
   useEffect(() => {
     axios
     .get(`${api}`)
     .then(({ data: stockDataArray }) => {
-      console.log(stockDataArray)
-      // const slicedArray = newsArray.articles.slice(0, 5);
-      // setNews(slicedArray);
+      const cleanDataSet = stockDataArray[ 'Time Series (Daily)' ];
+
+        console.log(stockDataArray[ 'Time Series (Daily)' ]);
+        console.log('cleanDataSet', cleanDataSet);
+
       setStockData(stockDataArray);
+      // candleSeries.setData(cleanDataSet);
     })
     .catch((err) => {
       console.log(err);
@@ -33,12 +78,19 @@ const FeedItem = ({title, firstName, lastName, date, stock, currentPrice, foreca
     return <h1>Loading...</h1>
   }
 
+  function dateFunction(date) {
+
+    let postDate = date.slice(0, 10);
+
+    return postDate;
+  }
+
   return (
     <div className="post">
       <p className="post__title">{title}</p>
       <div className="container1">
-        <p className="post__element-name">{firstName} {lastName}</p>
-        <p className="post__element-date">{date}</p>
+        <p className="post__element-name">{name}</p>
+        <p className="post__element-date">{dateFunction(date)}</p>
       </div>
       <div className="container2">
         <div className="container3">
@@ -54,6 +106,7 @@ const FeedItem = ({title, firstName, lastName, date, stock, currentPrice, foreca
           <p className={forecastClass}>{forecast}</p>
         </div>
       </div>
+      {/* <div className="stockChart">{stockChart}</div> */}
       <p className="post__element-text">{analysis}</p>
     </div>
   );
