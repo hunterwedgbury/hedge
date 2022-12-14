@@ -17,7 +17,7 @@ app.use(helmet());
 app.use(
     cors({
         origin: true,
-        credntials: true
+        credentials: true
     })
 );
 
@@ -54,7 +54,7 @@ passport.use(
               .insert({
                 userId: profile.id,
                 linkedinId: profile.id,
-                profilePicture: profile._json.profilePicture.displayImage,
+                profilePicture: profile.photos[2].value,
                 displayName: profile.displayName
               })
               .then(userId => {

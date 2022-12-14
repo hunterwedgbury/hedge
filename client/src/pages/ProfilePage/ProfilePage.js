@@ -1,8 +1,10 @@
 import './ProfilePage.scss'
 
 import { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 
+import arrowBack from '../../assets/icons/arrow1.png'
 import background from '../../assets/background.jpg'
 import LoginButton from '../../components/Login/Login';
 import LogoutButton from '../../components/Logout/Logout';
@@ -18,8 +20,9 @@ class ProfilePage extends Component {
 
     componentDidMount() {
         axios
-            .get(`${urlForProfile}/auth/profile`, { withCedentials: true })
+            .get(`${urlForProfile}/auth/profile`, { withCredentials: true })
             .then(res => {
+                console.log(res.data)
                 this.setState({
                     isAuthenticating: false,
                     isLoggedIn: true,
@@ -50,20 +53,29 @@ class ProfilePage extends Component {
                         <>
                             <img className='section__block' src={background} alt='Default profile background photo'/>
                             <div className="profile">
-                                <img className='profile__avatar' src={profileData._json.profilePicture.displayImage} alt='Profile picture'/>
+                                <img className='profile__avatar' src={profileData.profilePicture} alt='Profile picture'/>
                                 <div className='details'>
                                     <h1 className='details__name'>{profileData.displayName}</h1>
-                                    <h2 className='details__headline'>Queen’s University Applied Economics Class of 2021 | Smith Certificate in Business | Full Stack Developer</h2>
-                                    <p className='details__location'>Toronto, CA</p>
+                                    <div className='details__button'>
+                                        <LogoutButton />
+                                    </div>
                                 </div>
-                                <LogoutButton />
+                                <h2 className='details__headline'>Queen’s University Applied Economics Class of 2021 | Smith Certificate in Business | Full Stack Developer</h2>
+                                <p className='details__location'>Toronto, CA</p>
                             </div>
                         </>
                     )
                 ) : (
                     <>
-                        <h1>Login</h1>
-                        <LoginButton />
+                        <div className="login-container">
+                            <NavLink className="login-container__link" to={`/`}>
+                                <img className="login-container__arrow" src={arrowBack} alt="Arrow back"></img>
+                            </NavLink>
+                            <h1 className="login-container__header">Sign in</h1>
+                        </div>
+                        <div className='login-container__button'>
+                            <LoginButton />
+                        </div>
                     </>
                 )}
             </section>

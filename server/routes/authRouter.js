@@ -11,7 +11,7 @@ router.get('/linkedin', passport.authenticate('linkedin', { scope: ['r_emailaddr
 router.get('/linkedin/callback', 
   passport.authenticate('linkedin', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect(process.env.CLIENT_URL);
+    res.redirect('http://localhost:3000/profile');
   });
 
 router.get('/profile', (req, res) => {
@@ -25,7 +25,7 @@ router.get('/logout', (req, res) => {
       if (error) {
         return res.status(500).json({message: "Server error, please try again later", error: error});
       }
-      res.redirect(process.env.CLIENT_URL);
+      res.redirect('http://localhost:3000/profile');
   });
 });
 
