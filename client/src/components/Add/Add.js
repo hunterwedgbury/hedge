@@ -4,13 +4,14 @@ import axios from "axios";
 import { useNavigate  } from 'react-router-dom';
 import { useState, useEffect } from "react";
 
-const Add = () => {
+const Add = () => { 
 
     const initialValues = { title: '', stock: '', currentPrice: '', forecast: '', analysis: '' };
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [updatedMessage, setUpdatedMessage] = useState('');
-
+    const [isError, setIsError] = useState(false);
+ 
     const navigateFeedPage = useNavigate();
 
     const handleChange = (e) => {
@@ -21,25 +22,30 @@ const Add = () => {
     const handleAdd = (event) => {
         event.preventDefault();
         setFormErrors(validate(formValues));
+        if (!isError) {
+            return
+        };
 
         axios
         .get(`http://localhost:1000/auth/profile`, { withCredentials: true })
         .then(res => {
-            console.log('PROFILE', res.data);
+            console.log('DISPLAY NAME', res.data.displayName);
+            return axios
+                    .post('http://localhost:1000/feed', {
+                        'title': formValues.title,
+                        'stock': formValues.stock,
+                        'date': new Date().toJSON().slice(0, 19),
+                        'name': res.data.displayName,
+                        'current_price': formValues.currentPrice,
+                        'forecast': formValues.forecast,
+                        'analysis': formValues.analysis,
+                    })
+                    .then((res) => {
+                        console.log(res);
+                    })
+                    .then(setUpdatedMessage('Thank you for sharing your analysis on Hedge'))
+                    .then(setTimeout(() => navigateFeedPage('/'), 2000))
         })
-        .post('http://localhost:1000/feed', {
-            'title': formValues.title,
-            'stock': formValues.stock,
-            // 'name': res.data.displayName,
-            'current_price': formValues.currentPrice,
-            'forecast': formValues.forecast,
-            'analysis': formValues.analysis,
-        })
-        .then((res) => {
-            console.log(res);
-        })
-        // .then(setUpdatedMessage('Thank you for sharing your analysis on Hedge'))
-        // .then(setTimeout(()=>navigateFeedPage('/'), 2000))
         .catch((error) => {
             console.log(error);
         });
@@ -54,19 +60,31 @@ const Add = () => {
         const formErrors = {}
         if (!formValues.title) {
             formErrors.title = "Please provide title";
+            setIsError(false)
         }
         if (!formValues.stock) {
             formErrors.stock = "Please provide feature stock";
+            setIsError(false)
+        }
+        if (formValues.stock.length > 4) {
+            formErrors.stock = "Stock symbol cannot exceed 4 characters";
+            setIsError(false)
         }
         if (!formValues.currentPrice) {
             formErrors.currentPrice = "Please provide stock price";
+            setIsError(false)
         }
         if (!formValues.forecast) {
             formErrors.forecast = "Please provide forecast";
+            setIsError(false)
         }
         if (!formValues.analysis) {
             formErrors.analysis = "Please provide analysis";
+            setIsError(false)
         } 
+        if (formValues.title && formValues.stock && formValues.currentPrice && formValues.forecast && formValues.analysis) {
+            setIsError(true)
+        }
         return formErrors;
     }
 

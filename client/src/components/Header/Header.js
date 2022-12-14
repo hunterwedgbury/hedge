@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import { NavLink, Link } from 'react-router-dom';
-import avatar from '../../assets/avatar.jpg'
 import { Component } from 'react';
 
 import './Header.scss';
