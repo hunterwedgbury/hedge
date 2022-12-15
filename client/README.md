@@ -1,70 +1,106 @@
-# Getting Started with Create React App
+# HEDGE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Hedge is a finance platform/forum for amateur and professional investors to share financial analysis and publicly track the outcome of their analysis. Users can write blog posts with a selected feature stock and the site will track stock performance from the time of posting. One long-term goal would be to implement payment processing so that users can monetize their analysis via a tips feature and/or offering exclusive analysis for a monthly subscription fee.
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+## Setting Up LinkedIn Auth
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Setting up OAuth - https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow?tabs=HTTPS1
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+If this is first time creating an application you will need to configure the consent screen.
 
-### `npm test`
+* Configure your application in the Developer Portal to obtain Client ID and Client Secret.
+* Your application directs the browser to LinkedIn's OAuth 2.0 authorization page where the member authenticates.
+* After authentication, LinkedIn's authorization server passes an authorization code to your application.
+* Your application sends this code to LinkedIn and LinkedIn returns an access token.
+* Your application uses this token to make API calls on behalf of the member.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This will require the following:
 
-### `npm run build`
+* CLIENT_ID
+* CLIENT_SECRET
+* SESSION_SECRET
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Reference - https://developer.linkedin.com/
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Installation Instructions
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Server side
 
-### `npm run eject`
+- In the first terminal tab:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+    ```bash
+    cd server
+    npm install
+    npx knex migrate:latest # updates the DB to the current schema
+    npm run dev     # starts the development environment
+    ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Client side
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- In a second terminal tab:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    ```bash
+    cd client
+    npm run start
+    ```
 
-## Learn More
+### `user_table`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| name               | type               | notes |
+| ------------------ | ------------------ | ----- |
+| `userId`           | PK (string)        | (1)   |
+| `linkedinId`       | string             |       |
+| `displayName`      | string             |       |
+| `profilePicture`   | string             |       |
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `feed_table`
 
-### Code Splitting
+| name               | type               | notes |
+| ------------------ | ------------------ | ----- |
+| `postId`           | PK (string)        | (1)   |
+| `title`            | string             |       |
+| `date`             | timestamp          |       |
+| `name`             | string             |       |
+| `stock`            | string, [4]        |       |
+| `current_price`    | integer            |       |
+| `forecast`         | string, [7]        |       |
+| `analysis`         | text               |       |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## API Endpoints
 
-### Making a Progressive Web App
+### GET `/feed`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Get information from all posts. 
 
-### Advanced Configuration
+    ```json
+    [
+        {
+            "postId": "96514d1b-f337-4721-a97e-d393110ab1dc",
+            "title": "SNEAKER MARKET POPPING OFF IN 2023",
+            "date": "2022-12-15T08:27:32.000Z",
+            "name": "Hunter Wedgbury",
+            "stock": "NIKE",
+            "current_price": 45,
+            "forecast": "BULLISH",
+            "analysis": "Nike makes really nice shoes"
+        }
+    ]
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### POST `/feed`
 
-### Deployment
+Add a new post.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    ```json
+    [
+        {
+            "title": "SNEAKER MARKET POPPING OFF IN 2023",
+            "stock": "NIKE",
+            "current_price": 45,
+            "forecast": "BULLISH",
+            "analysis": "Nike makes really nice shoes"
+        }
+    ]
